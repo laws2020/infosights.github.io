@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Infosights Consulting — Open-source African data infrastructure. R packages, data pipelines, and capacity building for African institutions.">
+<meta name="keywords" content="African data, R packages, opennaijR, openafrR, Nigeria statistics, data consulting, Lawrence Garba">
+<meta property="og:title" content="Infosights Consulting | African Data Infrastructure">
+<meta property="og:description" content="Real packages. Real pipelines. Real results for African institutions.">
+<title>Infosights Consulting | African Data Infrastructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════ */
+:root {
+  --navy:      #0B1F3A;
+  --navy-mid:  #132d52;
+  --navy-lite: #1B3A5C;
+  --rust:      #C04A1A;
+  --rust-lite: #D9602E;
+  --gold:      #C9972A;
+  --gold-lite: #E8B84B;
+  --sand:      #F5EFE4;
+  --sand-dark: #EDE4D5;
+  --white:     #FAFAF8;
+  --mist:      #E8EDF3;
+  --slate:     #6B7A8D;
+  --ink:       #1A1A1A;
+  --radius:    2px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ═══════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+
+/* ═══════════════════════════════════════
+   UTILITY
+═══════════════════════════════════════ */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.container--narrow { max-width: 800px; margin: 0 auto; padding: 0 2rem; }
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--rust);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+.eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--rust); }
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--navy);
+}
+.section-title em { color: var(--rust); font-style: italic; }
+.section-body {
+  font-size: 1.05rem;
+  color: var(--slate);
+  line-height: 1.75;
+  max-width: 560px;
+}
+.tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.7rem;
+  border: 1px solid rgba(11,31,58,0.2);
+  color: var(--slate);
+  border-radius: var(--radius);
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 2rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: var(--transition);
+}
+.btn-primary { background: var(--rust); color: #fff; border-color: var(--rust); }
+.btn-primary:hover { background: var(--rust-lite); border-color: var(--rust-lite); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(192,74,26,0.3); }
+.btn-outline { background: transparent; color: var(--navy); border-color: var(--navy); }
+.btn-outline:hover { background: var(--navy); color: #fff; transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,0.5); }
+.btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+  background: rgba(11,31,58,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: var(--transition);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 68px; padding: 0 2rem;
+  max-width: 1200px; margin: 0 auto;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.nav-logo-mark {
+  width: 36px; height: 36px;
+  background: var(--rust);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius);
+}
+.nav-logo-mark svg { width: 20px; height: 20px; fill: #fff; }
+.nav-logo-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+.nav-logo-text span { color: var(--gold); }
+.nav-links {
+  display: flex; align-items: center; gap: 0.25rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius);
+  transition: var(--transition);
+  letter-spacing: 0.02em;
+}
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.nav-cta { margin-left: 0.75rem; }
+.nav-cta .btn { padding: 0.55rem 1.4rem; font-size: 0.8rem; }
+.nav-hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 4px;
+}
+.nav-hamburger span { display: block; width: 24px; height: 2px; background: #fff; transition: var(--transition); border-radius: 2px; }
+.nav-mobile {
+  display: none; position: fixed; top: 68px; left: 0; right: 0;
+  background: var(--navy); z-index: 998; padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  flex-direction: column; gap: 0.25rem;
+}
+.nav-mobile.open { display: flex; }
+.nav-mobile a {
+  color: rgba(255,255,255,0.8); font-size: 1rem; font-weight: 500;
+  padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: var(--transition);
+}
+.nav-mobile a:hover { color: var(--gold); }
+
+/* ═══════════════════════════════════════
+   HERO
+═══════════════════════════════════════ */
+#home {
+  position: relative;
+  min-height: 100vh;
+  background: var(--navy);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 120px 0 80px;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; pointer-events: none;
+}
+.hero-bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-bg-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(192,74,26,0.18) 0%, transparent 70%);
+  top: -100px; right: -100px; border-radius: 50%;
+}
+.hero-bg-glow2 {
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(201,151,42,0.12) 0%, transparent 70%);
+  bottom: 0; left: 10%; border-radius: 50%;
+}
+.hero-inner {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center;
+}
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  display: flex; align-items: center; gap: 0.75rem;
+  opacity: 0; animation: fadeUp 0.6s ease 0.2s forwards;
+}
+.hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.8rem, 5vw, 4.4rem);
+  font-weight: 600;
+  line-height: 1.05;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.6s ease 0.35s forwards;
+}
+.hero-title em { color: var(--gold); font-style: italic; }
+.hero-title .line-rust { color: var(--rust); }
+.hero-body {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.6s ease 0.5s forwards;
+}
+.hero-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.6s ease 0.65s forwards;
+}
+.hero-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  margin-top: 3.5rem;
+  opacity: 0; animation: fadeUp 0.6s ease 0.8s forwards;
+}
+.hero-stat {
+  background: rgba(255,255,255,0.03);
+  padding: 1.2rem 1.5rem;
+}
+.hero-stat-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.hero-stat-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+/* right side — code window */
+.hero-right {
+  opacity: 0; animation: fadeUp 0.6s ease 0.5s forwards;
+}
+.code-window {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 32px 64px rgba(0,0,0,0.4);
+}
+.code-window-bar {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.85rem 1.2rem;
+  background: rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.code-dot { width: 10px; height: 10px; border-radius: 50%; }
+.code-dot-r { background: #FF5F56; }
+.code-dot-y { background: #FFBD2E; }
+.code-dot-g { background: #27C93F; }
+.code-file {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.35);
+  margin-left: auto;
+  letter-spacing: 0.05em;
+}
+.code-body {
+  padding: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  line-height: 1.8;
+}
+.c-comment { color: #6A9955; }
+.c-lib { color: #9CDCFE; }
+.c-fn { color: #DCDCAA; }
+.c-str { color: #CE9178; }
+.c-kw { color: #C586C0; }
+.c-op { color: rgba(255,255,255,0.5); }
+.c-out { color: #4EC9B0; }
+.c-num { color: #B5CEA8; }
+.c-plain { color: rgba(255,255,255,0.75); }
+.code-line { display: flex; gap: 1.2rem; }
+.code-ln { color: rgba(255,255,255,0.18); min-width: 1.2rem; text-align: right; user-select: none; }
+
+/* ═══════════════════════════════════════
+   TICKER / MARQUEE
+═══════════════════════════════════════ */
+.ticker {
+  background: var(--rust);
+  overflow: hidden; white-space: nowrap;
+  padding: 0.65rem 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.ticker-inner {
+  display: inline-flex; gap: 3rem;
+  animation: ticker 28s linear infinite;
+}
+.ticker-item {
+  display: inline-flex; align-items: center; gap: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.9);
+}
+.ticker-sep { color: rgba(255,255,255,0.4); font-size: 1rem; }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ═══════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════ */
+#about { padding: 120px 0; background: var(--white); }
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6rem; align-items: start;
+}
+.about-left { position: sticky; top: 100px; }
+.about-photo-wrap {
+  position: relative; margin-bottom: 2rem;
+}
+.about-photo {
+  width: 100%; aspect-ratio: 4/5;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-lite) 100%);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.about-photo-initials {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 6rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.15);
+  letter-spacing: -0.02em;
+}
+.about-photo-badge {
+  position: absolute; bottom: -1rem; right: -1rem;
+  background: var(--rust);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.about-credentials {
+  display: flex; flex-direction: column; gap: 0.75rem; margin-top: 2rem;
+}
+.about-cred {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--sand);
+  border-left: 3px solid var(--rust);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.about-cred-icon { font-size: 1.1rem; }
+.about-cred-text { font-size: 0.85rem; color: var(--navy); font-weight: 500; }
+.about-right {}
+.about-right .section-title { margin-bottom: 1.25rem; }
+.about-right .section-body { margin-bottom: 1.5rem; max-width: 100%; }
+.about-philosophy {
+  background: var(--navy);
+  color: #fff;
+  padding: 2rem;
+  border-radius: 4px;
+  margin: 2rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.about-philosophy::before {
+  content: '"';
+  position: absolute; top: -1rem; left: 1.5rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 8rem; color: rgba(255,255,255,0.06);
+  line-height: 1; pointer-events: none;
+}
+.about-philosophy p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  font-style: italic;
+  color: rgba(255,255,255,0.9);
+  position: relative;
+}
+.about-philosophy cite {
+  display: block; margin-top: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-style: normal;
+}
+.skills-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0.75rem; margin-top: 2rem;
+}
+.skill-item {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.85rem; color: var(--slate);
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.skill-item::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--rust);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════
+   SERVICES
+═══════════════════════════════════════ */
+#services { padding: 120px 0; background: var(--sand); }
+.services-header {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; align-items: end; margin-bottom: 4rem;
+}
+.services-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1.5px; background: rgba(11,31,58,0.1);
+  border: 1.5px solid rgba(11,31,58,0.1);
+  border-radius: 4px; overflow: hidden;
+}
+.service-card {
+  background: var(--white);
+  padding: 2.5rem;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.service-card:nth-child(1)::before { background: var(--rust); }
+.service-card:nth-child(2)::before { background: var(--gold); }
+.service-card:nth-child(3)::before { background: #2A4A35; }
+.service-card:nth-child(4)::before { background: #2D3A4A; }
+.service-card:hover::before { transform: scaleX(1); }
+.service-card:hover { background: #FEFEFE; box-shadow: 0 8px 32px rgba(0,0,0,0.08); z-index: 2; }
+.service-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem; font-weight: 700;
+  color: rgba(11,31,58,0.07);
+  line-height: 1; margin-bottom: 1rem;
+}
+.service-icon {
+  width: 44px; height: 44px; margin-bottom: 1.25rem;
+  background: var(--sand);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+}
+.service-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 600;
+  color: var(--navy); margin-bottom: 0.75rem; line-height: 1.2;
+}
+.service-card p { font-size: 0.9rem; color: var(--slate); line-height: 1.7; margin-bottom: 1.25rem; }
+.service-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+/* Pricing */
+.pricing-section {
+  margin-top: 5rem;
+  padding-top: 4rem;
+  border-top: 1px solid rgba(11,31,58,0.1);
+}
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; margin-top: 2.5rem;
+}
+.pricing-card {
+  background: var(--white);
+  border: 1.5px solid rgba(11,31,58,0.1);
+  border-radius: 4px;
+  padding: 2rem;
+  position: relative;
+  transition: var(--transition);
+}
+.pricing-card:hover { border-color: var(--rust); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.1); }
+.pricing-card.featured {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+.pricing-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--rust);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.9rem;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.pricing-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.pricing-card:not(.featured) .pricing-name { color: var(--rust); }
+.pricing-card.featured .pricing-name { color: var(--gold); }
+.pricing-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+  color: var(--navy);
+}
+.pricing-card.featured .pricing-price { color: #fff; }
+.pricing-unit {
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+.pricing-card:not(.featured) .pricing-unit { color: var(--slate); }
+.pricing-card.featured .pricing-unit { color: rgba(255,255,255,0.55); }
+.pricing-items { list-style: none; margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.pricing-items li {
+  font-size: 0.85rem; display: flex; align-items: flex-start; gap: 0.6rem;
+}
+.pricing-card:not(.featured) .pricing-items li { color: var(--slate); }
+.pricing-card.featured .pricing-items li { color: rgba(255,255,255,0.75); }
+.pricing-items li::before {
+  content: '✓'; font-weight: 700; flex-shrink: 0; margin-top: 0.05rem; font-size: 0.8rem;
+}
+.pricing-card:not(.featured) .pricing-items li::before { color: var(--rust); }
+.pricing-card.featured .pricing-items li::before { color: var(--gold); }
+
+/* ═══════════════════════════════════════
+   PACKAGES
+═══════════════════════════════════════ */
+#packages { padding: 120px 0; background: var(--white); }
+.packages-header { margin-bottom: 4rem; }
+.packages-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.pkg-card {
+  border: 1.5px solid rgba(11,31,58,0.1);
+  border-radius: 4px;
+  padding: 2rem;
+  transition: var(--transition);
+  position: relative; overflow: hidden;
+  background: var(--white);
+}
+.pkg-card:hover { border-color: var(--navy); box-shadow: 0 12px 36px rgba(0,0,0,0.08); transform: translateY(-3px); }
+.pkg-accent {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.pkg-status {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+  margin-bottom: 1.25rem;
+}
+.status-live { background: #E8F5E9; color: #2E7D32; }
+.status-dev  { background: #FFF3E0; color: #E65100; }
+.status-beta { background: #E3F2FD; color: #1565C0; }
+.pkg-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem; font-weight: 500;
+  color: var(--navy); margin-bottom: 0.4rem;
+}
+.pkg-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 600;
+  color: var(--ink); margin-bottom: 0.75rem; line-height: 1.3;
+}
+.pkg-desc { font-size: 0.85rem; color: var(--slate); line-height: 1.65; margin-bottom: 1.25rem; }
+.pkg-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+.pkg-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.pkg-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--rust);
+  display: flex; align-items: center; gap: 0.3rem;
+  transition: var(--transition);
+  border-bottom: 1px solid transparent;
+}
+.pkg-link:hover { border-color: var(--rust); }
+
+/* ═══════════════════════════════════════
+   SPEAKING / BLOG
+═══════════════════════════════════════ */
+#writing { padding: 120px 0; background: var(--sand); }
+.writing-grid {
+  display: grid; grid-template-columns: 3fr 2fr;
+  gap: 4rem; align-items: start;
+}
+.speaking-list { display: flex; flex-direction: column; gap: 0; }
+.speaking-item {
+  display: grid; grid-template-columns: 80px 1fr;
+  gap: 1.5rem; align-items: start;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid rgba(11,31,58,0.1);
+  transition: var(--transition);
+}
+.speaking-item:first-child { border-top: 1px solid rgba(11,31,58,0.1); }
+.speaking-item:hover .speaking-title { color: var(--rust); }
+.speaking-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--rust);
+  text-transform: uppercase;
+  line-height: 1.4;
+  padding-top: 0.15rem;
+}
+.speaking-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 20px;
+  margin-bottom: 0.5rem;
+}
+.type-pkg { background: #E8F5E9; color: #2E7D32; }
+.type-talk { background: #E3F2FD; color: #1565C0; }
+.type-article { background: #FFF3E0; color: #E65100; }
+.type-training { background: #F3E5F5; color: #6A1B9A; }
+.speaking-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 600;
+  color: var(--navy); margin-bottom: 0.4rem;
+  line-height: 1.3; transition: var(--transition);
+}
+.speaking-sub { font-size: 0.82rem; color: var(--slate); line-height: 1.5; }
+/* sidebar */
+.writing-sidebar {}
+.sidebar-card {
+  background: var(--white);
+  border: 1.5px solid rgba(11,31,58,0.1);
+  border-radius: 4px; padding: 2rem; margin-bottom: 1.5rem;
+}
+.sidebar-card h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 600; color: var(--navy);
+  margin-bottom: 1rem;
+}
+.sidebar-topics { display: flex; flex-direction: column; gap: 0.5rem; }
+.sidebar-topic {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.85rem; color: var(--slate);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  cursor: pointer; transition: var(--transition);
+}
+.sidebar-topic:hover { color: var(--navy); }
+.sidebar-topic::before { content: '→'; color: var(--rust); font-size: 0.8rem; }
+.speaking-cta-card {
+  background: var(--navy); border-radius: 4px; padding: 2rem;
+}
+.speaking-cta-card h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; font-weight: 600;
+  color: #fff; margin-bottom: 0.75rem;
+}
+.speaking-cta-card p { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 1.5rem; line-height: 1.6; }
+
+/* ═══════════════════════════════════════
+   CONTACT
+═══════════════════════════════════════ */
+#contact { padding: 120px 0; background: var(--navy); position: relative; overflow: hidden; }
+#contact .hero-bg-grid { opacity: 0.4; }
+#contact .hero-bg-glow { opacity: 0.5; }
+.contact-inner {
+  position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 6rem; align-items: start;
+}
+.contact-left .section-title { color: #fff; margin-bottom: 1.25rem; }
+.contact-left .section-body { color: rgba(255,255,255,0.6); max-width: 100%; margin-bottom: 2.5rem; }
+.contact-info-list { display: flex; flex-direction: column; gap: 1.25rem; }
+.contact-info-item {
+  display: flex; gap: 1rem; align-items: flex-start;
+}
+.contact-info-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: rgba(255,255,255,0.07);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.contact-info-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.2rem;
+}
+.contact-info-val { font-size: 0.9rem; color: rgba(255,255,255,0.75); }
+.contact-info-val a { transition: var(--transition); }
+.contact-info-val a:hover { color: var(--gold); }
+/* form */
+.contact-form {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  padding: 2.5rem;
+}
+.contact-form h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 600;
+  color: #fff; margin-bottom: 1.75rem;
+}
+.form-group { margin-bottom: 1.25rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group label {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 0.5rem;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  padding: 0.8rem 1rem;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  color: #fff;
+  transition: var(--transition);
+  outline: none;
+  -webkit-appearance: none;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--gold);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 0 0 3px rgba(201,151,42,0.15);
+}
+.form-group select option { background: var(--navy); color: #fff; }
+.form-group textarea { resize: vertical; min-height: 120px; }
+.form-submit { width: 100%; padding: 1rem; font-size: 0.9rem; margin-top: 0.5rem; border: none; }
+.form-success {
+  display: none; text-align: center; padding: 2rem;
+  color: var(--gold);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+}
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+.footer {
+  background: #060F1C;
+  padding: 3rem 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-inner {
+  display: flex; align-items: center;
+  justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+}
+.footer-copy {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+}
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  transition: var(--transition);
+}
+.footer-links a:hover { color: var(--gold); }
+
+/* ═══════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .hero-right { display: none; }
+  .about-grid { grid-template-columns: 1fr; }
+  .about-left { position: static; }
+  .about-photo { aspect-ratio: 3/2; }
+  .packages-grid { grid-template-columns: 1fr 1fr; }
+  .writing-grid { grid-template-columns: 1fr; }
+  .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+}
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-hamburger { display: flex; }
+  .services-header { grid-template-columns: 1fr; gap: 1.5rem; }
+  .services-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .packages-grid { grid-template-columns: 1fr; }
+  .hero-stats { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .footer-inner { flex-direction: column; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ NAV ═══════ -->
+<nav class="nav" id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">
+      <div class="nav-logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <span class="nav-logo-text">Infosights<span>.</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#packages">Packages</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-primary">Work with me</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- mobile nav -->
+<div class="nav-mobile" id="mobile-nav">
+  <a href="#about" onclick="closeMobileNav()">About</a>
+  <a href="#services" onclick="closeMobileNav()">Services</a>
+  <a href="#packages" onclick="closeMobileNav()">Packages</a>
+  <a href="#writing" onclick="closeMobileNav()">Writing & Speaking</a>
+  <a href="#contact" onclick="closeMobileNav()">Contact</a>
+</div>
+
+<!-- ═══════ HERO ═══════ -->
+<section id="home">
+  <div class="hero-bg">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-bg-glow"></div>
+    <div class="hero-bg-glow2"></div>
+  </div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <p class="hero-eyebrow">African Data Infrastructure Consulting</p>
+        <h1 class="hero-title">
+          Building the data<br>
+          layer <em>Africa</em><br>
+          <span class="line-rust">deserves.</span>
+        </h1>
+        <p class="hero-body">
+          Open-source R packages, reproducible data pipelines, and capacity building for African institutions — from Nigeria's central bank series to pan-African macroeconomic data.
+        </p>
+        <div class="hero-actions">
+          <a href="#services" class="btn btn-primary">Explore services</a>
+          <a href="#packages" class="btn btn-ghost">View packages →</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-num">8+</div>
+            <div class="hero-stat-label">R Packages</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">30+</div>
+            <div class="hero-stat-label">Data Sources</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-num">54</div>
+            <div class="hero-stat-label">Countries Target</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="code-window">
+          <div class="code-window-bar">
+            <span class="code-dot code-dot-r"></span>
+            <span class="code-dot code-dot-y"></span>
+            <span class="code-dot code-dot-g"></span>
+            <span class="code-file">analysis.R</span>
+          </div>
+          <div class="code-body">
+            <div class="code-line"><span class="code-ln">1</span><span class="c-comment"># Fetch Nigerian CPI from NBS</span></div>
+            <div class="code-line"><span class="code-ln">2</span><span class="c-lib">library</span><span class="c-plain">(opennaijR)</span></div>
+            <div class="code-line"><span class="code-ln">3</span><span class="c-plain"> </span></div>
+            <div class="code-line"><span class="code-ln">4</span><span class="c-comment"># Discover available series</span></div>
+            <div class="code-line"><span class="code-ln">5</span><span class="c-fn">find</span><span class="c-plain">(</span><span class="c-str">"inflation"</span><span class="c-plain">, country </span><span class="c-op">=</span><span class="c-str"> "NG"</span><span class="c-plain">)</span></div>
+            <div class="code-line"><span class="code-ln">6</span><span class="c-plain"> </span></div>
+            <div class="code-line"><span class="code-ln">7</span><span class="c-comment"># Fetch tidy data frame</span></div>
+            <div class="code-line"><span class="code-ln">8</span><span class="c-plain">cpi </span><span class="c-op">&lt;-</span><span class="c-fn"> fetch</span><span class="c-plain">(</span></div>
+            <div class="code-line"><span class="code-ln">9</span><span class="c-plain">  source </span><span class="c-op">=</span><span class="c-str"> "nbs"</span><span class="c-plain">,</span></div>
+            <div class="code-line"><span class="code-ln">10</span><span class="c-plain">  series </span><span class="c-op">=</span><span class="c-str"> "cpi_headline"</span><span class="c-plain">,</span></div>
+            <div class="code-line"><span class="code-ln">11</span><span class="c-plain">  from   </span><span class="c-op">=</span><span class="c-str"> "2020-01"</span></div>
+            <div class="code-line"><span class="code-ln">12</span><span class="c-plain">)</span></div>
+            <div class="code-line"><span class="code-ln">13</span><span class="c-plain"> </span></div>
+            <div class="code-line"><span class="code-ln">14</span><span class="c-comment"># Visualise — base R, no dependencies</span></div>
+            <div class="code-line"><span class="code-ln">15</span><span class="c-fn">figure</span><span class="c-plain">(cpi, type </span><span class="c-op">=</span><span class="c-str"> "line"</span><span class="c-plain">)</span></div>
+            <div class="code-line"><span class="code-ln">16</span><span class="c-plain"> </span></div>
+            <div class="code-line"><span class="code-ln">17</span><span class="c-out">#&gt; ✓ 52 observations · NBS · 2020-01 to 2024-12</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ticker -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span class="ticker-item">opennaijR <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">openafrR <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">nrsR — NTA 2025 Compliance <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">tracesSQL <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">gitpulse <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">tripwire <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">pkgstudy <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">CBN · NBS · SARB · AfDB <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">Grammar of African Data Science <span class="ticker-sep">·</span></span>
+      <!-- duplicate for seamless loop -->
+      <span class="ticker-item">opennaijR <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">openafrR <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">nrsR — NTA 2025 Compliance <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">tracesSQL <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">gitpulse <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">tripwire <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">pkgstudy <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">CBN · NBS · SARB · AfDB <span class="ticker-sep">·</span></span>
+      <span class="ticker-item">Grammar of African Data Science <span class="ticker-sep">·</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ ABOUT ═══════ -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-left reveal">
+        <div class="about-photo-wrap">
+          <div class="about-photo">
+            <span class="about-photo-initials">LDG</span>
+          </div>
+          <div class="about-photo-badge">Abuja, Nigeria</div>
+        </div>
+        <div class="about-credentials">
+          <div class="about-cred">
+            <span class="about-cred-icon">📦</span>
+            <span class="about-cred-text">8+ open-source R packages on GitHub</span>
+          </div>
+          <div class="about-cred">
+            <span class="about-cred-icon">🏛️</span>
+            <span class="about-cred-text">Consulting partner: Taraba State Bureau of Statistics</span>
+          </div>
+          <div class="about-cred">
+            <span class="about-cred-icon">🌍</span>
+            <span class="about-cred-text">Building pan-African data infrastructure</span>
+          </div>
+          <div class="about-cred">
+            <span class="about-cred-icon">📖</span>
+            <span class="about-cred-text">Author: Building Twitter Bots with R</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-right reveal">
+        <p class="eyebrow">About</p>
+        <h2 class="section-title">Lawrence Daniel<br><em>Garba</em></h2>
+        <p class="section-body" style="margin-top:1rem">
+          I'm the founder and lead consultant of Infosights Consulting — an independent practice at the intersection of open-source R tooling and African economic data.
+        </p>
+        <p class="section-body" style="margin-top:1rem">
+          My work addresses a structural gap: Africa's public institutions generate substantial economic and statistical data, but that data remains largely inaccessible to researchers and analysts who need it in programmatic, reproducible form. I build the infrastructure that closes that gap.
+        </p>
+        <p class="section-body" style="margin-top:1rem">
+          I bring deep R programming expertise — favouring base R's granular control and aesthetic rigour over abstracted libraries — and a practitioner's understanding of Nigerian and African financial systems, tax policy, and development data.
+        </p>
+
+        <div class="about-philosophy">
+          <p>
+            African data exists. The plumbing to access it programmatically does not — yet. I'm building it, one package at a time, MIT licensed and freely available to every researcher on the continent.
+          </p>
+          <cite>— Infosights Consulting</cite>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-item">R Package Development</div>
+          <div class="skill-item">Macroeconomic Data</div>
+          <div class="skill-item">API Integration</div>
+          <div class="skill-item">Tax Compliance (NTA 2025)</div>
+          <div class="skill-item">Shiny Applications</div>
+          <div class="skill-item">Statistical Training</div>
+          <div class="skill-item">Data Pipeline Design</div>
+          <div class="skill-item">Base R Visualisation</div>
+        </div>
+
+        <div style="display:flex; gap:1rem; margin-top:2.5rem; flex-wrap:wrap;">
+          <a href="#contact" class="btn btn-primary">Get in touch</a>
+          <a href="https://github.com/laws2020" target="_blank" class="btn btn-outline">GitHub →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SERVICES ═══════ -->
+<section id="services">
+  <div class="container">
+    <div class="services-header">
+      <div class="reveal">
+        <p class="eyebrow">Services</p>
+        <h2 class="section-title">Four ways to<br>work with <em>Infosights</em></h2>
+      </div>
+      <div class="reveal">
+        <p class="section-body">
+          Every engagement is anchored to working, deployed software — not slide decks. Each service line has a live proof point.
+        </p>
+      </div>
+    </div>
+
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <div class="service-icon">🔌</div>
+        <h3>Data Infrastructure Consulting</h3>
+        <p>Connect your analysts to clean, programmatic macroeconomic and financial data. CBN monetary series, NBS releases, AfDB development indicators — built on opennaijR and openafrR, deployed and maintained for your institution.</p>
+        <div class="service-tags">
+          <span class="tag">opennaijR</span>
+          <span class="tag">openafrR</span>
+          <span class="tag">CBN API</span>
+          <span class="tag">SARB</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-icon">🎓</div>
+        <h3>Training & Curriculum Delivery</h3>
+        <p>Bespoke 2–3 day R workshops built around real Nigerian and African datasets. Staff leave with working pipelines querying live APIs. Curriculum already deployed at Taraba State Bureau of Statistics. On-site or remote.</p>
+        <div class="service-tags">
+          <span class="tag">R / RStudio</span>
+          <span class="tag">Shiny</span>
+          <span class="tag">pkgdown</span>
+          <span class="tag">On-site</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-icon">⚖️</div>
+        <h3>Commissioned Package Development</h3>
+        <p>Need a data connector that doesn't exist? A payroll tax engine implementing the Nigeria Tax Act 2025? nrsR is the reference implementation. Your commission funds the integration; you get a production-grade, CRAN-ready tool.</p>
+        <div class="service-tags">
+          <span class="tag">nrsR</span>
+          <span class="tag">NTA 2025</span>
+          <span class="tag">CRAN-ready</span>
+          <span class="tag">MIT licence</span>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-icon">🔧</div>
+        <h3>Developer Infrastructure & Tooling</h3>
+        <p>The infrastructure layer R-based organisations need to run in production. tracesSQL for SQL Server audit trails, tripwire for pipeline automation, gitpulse for GitHub dashboards, pkgstudy for package health analysis.</p>
+        <div class="service-tags">
+          <span class="tag">tracesSQL</span>
+          <span class="tag">tripwire</span>
+          <span class="tag">gitpulse</span>
+          <span class="tag">pkgstudy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="pricing-section reveal">
+      <p class="eyebrow">Pricing</p>
+      <h3 class="section-title" style="font-size:2rem">Transparent <em>rates</em></h3>
+      <div class="pricing-grid">
+
+        <div class="pricing-card">
+          <div class="pricing-name">Contributing Partner</div>
+          <div class="pricing-price">$2,500</div>
+          <div class="pricing-unit">starting from · per engagement</div>
+          <ul class="pricing-items">
+            <li>Data pipeline audit & design</li>
+            <li>Single API connector built</li>
+            <li>30-day post-delivery support</li>
+            <li>Written documentation</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline" style="width:100%;justify-content:center;">Get started</a>
+        </div>
+
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Most popular</div>
+          <div class="pricing-name">Development Partner</div>
+          <div class="pricing-price" style="color:#fff">$7,000</div>
+          <div class="pricing-unit">starting from · project scope</div>
+          <ul class="pricing-items">
+            <li>Full registry build-out</li>
+            <li>Shiny data explorer</li>
+            <li>Staff training workshop</li>
+            <li>12-month maintenance</li>
+            <li>Bi-annual briefings</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary" style="width:100%;justify-content:center;">Work with me</a>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-name">Founding Sponsor</div>
+          <div class="pricing-price">$15,000</div>
+          <div class="pricing-unit">starting from · 18-month programme</div>
+          <ul class="pricing-items">
+            <li>Full openafrR development</li>
+            <li>30+ country connectors</li>
+            <li>CRAN v1.0 submission</li>
+            <li>Named attribution in docs</li>
+            <li>2 training workshops</li>
+            <li>Quarterly briefings</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline" style="width:100%;justify-content:center;">Discuss partnership</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ PACKAGES ═══════ -->
+<section id="packages">
+  <div class="container">
+    <div class="packages-header reveal">
+      <p class="eyebrow">Open-Source Portfolio</p>
+      <h2 class="section-title">The <em>packages</em></h2>
+      <p class="section-body" style="margin-top:1rem">All packages are MIT licensed. The packages are the pitch — working software, not proposals.</p>
+    </div>
+
+    <div class="packages-grid">
+
+      <div class="pkg-card reveal">
+        <div class="pkg-accent" style="background: linear-gradient(90deg, #C04A1A, #E8B84B);"></div>
+        <span class="pkg-status status-live">● Live</span>
+        <div class="pkg-name">opennaijR</div>
+        <div class="pkg-title">Nigeria Macroeconomic & Financial Data</div>
+        <p class="pkg-desc">Registry-driven R package for querying CBN, NBS, and Nigerian financial data. Grammar of African Data Science verbs: find(), fetch(), frame(), feature(), figure().</p>
+        <div class="pkg-tags">
+          <span class="tag">CBN</span><span class="tag">NBS</span><span class="tag">Macroeconomic</span><span class="tag">CRAN-targeted</span>
+        </div>
+        <div class="pkg-links">
+          <a href="https://github.com/laws2020/opennaijR" target="_blank" class="pkg-link">GitHub ↗</a>
+          <a href="https://laws2020.github.io/opennaijR/" target="_blank" class="pkg-link">Docs ↗</a>
+        </div>
+      </div>
+
+      <div class="pkg-card reveal">
+        <div class="pkg-accent" style="background: linear-gradient(90deg, #1B3A5C, #C9972A);"></div>
+        <span class="pkg-status status-dev">● In Development</span>
+        <div class="pkg-name">openafrR</div>
+        <div class="pkg-title">Pan-African Data Infrastructure</div>
+        <p class="pkg-desc">Extension of the Grammar of African Data Science to all 54 African nations. SARB, AfDB Africa Information Highway, ECOWAS, and regional data sources.</p>
+        <div class="pkg-tags">
+          <span class="tag">SARB</span><span class="tag">AfDB</span><span class="tag">ECOWAS</span><span class="tag">Pan-African</span>
+        </div>
+        <div class="pkg-links">
+          <a href="https://github.com/laws2020" target="_blank" class="pkg-link">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="pkg-card reveal">
+        <div class="pkg-accent" style="background: linear-gradient(90deg, #2E7D32, #81C784);"></div>
+        <span class="pkg-status status-live">● Live</span>
+        <div class="pkg-name">nrsR</div>
+        <div class="pkg-title">Nigeria Revenue Service R Toolkit</div>
+        <p class="pkg-desc">Implements the Nigeria Tax Act 2025 and legacy PITA side-by-side. Versioned law registry, S3 classes, batch PAYE processing, and audit output for compliance workflows.</p>
+        <div class="pkg-tags">
+          <span class="tag">NTA 2025</span><span class="tag">PITA</span><span class="tag">PAYE</span><span class="tag">Tax Compliance</span>
+        </div>
+        <div class="pkg-links">
+          <a href="https://github.com/laws2020" target="_blank" class="pkg-link">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="pkg-card reveal">
+        <div class="pkg-accent" style="background: linear-gradient(90deg, #1565C0, #42A5F5);"></div>
+        <span class="pkg-status status-live">● Live</span>
+        <div class="pkg-name">tracesSQL</div>
+        <div class="pkg-title">R + SQL Server for Tax & Audit</div>
+        <p class="pkg-desc">Integrates R directly with SQL Server for tax reporting and compliance audit workflows. Pairs with nrsR to form a complete PAYE audit stack with database-backed audit trails.</p>
+        <div class="pkg-tags">
+          <span class="tag">SQL Server</span><span class="tag">Audit</span><span class="tag">Compliance</span>
+        </div>
+        <div class="pkg-links">
+          <a href="https://github.com/laws2020" target="_blank" class="pkg-link">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="pkg-card reveal">
+        <div class="pkg-accent" style="background: linear-gradient(90deg, #6A1B9A, #AB47BC);"></div>
+        <span class="pkg-status status-live">● Live</span>
+        <div class="pkg-name">gitpulse</div>
+        <div class="pkg-title">GitHub Analytics Dashboard Builder</div>
+        <p class="pkg-desc">Builds tidy, cached dashboards from GitHub API data and local Git history. CRAN download trends, contributor metrics, repo health — all in R.</p>
+        <div class="pkg-tags">
+          <span class="tag">GitHub API</span><span class="tag">Shiny</span><span class="tag">Analytics</span>
+        </div>
+        <div class="pkg-links">
+          <a href="https://github.com/laws2020" target="_blank" class="pkg-link">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="pkg-card reveal">
+        <div class="pkg-accent" style="background: linear-gradient(90deg, #E65100, #FF8F00);"></div>
+        <span class="pkg-status status-beta">● Beta</span>
+        <div class="pkg-name">tripwire</div>
+        <div class="pkg-title">Reactive Pipeline Automation</div>
+        <p class="pkg-desc">Filesystem watchers and scheduled triggers for R pipelines. Adds reactive, event-driven automation to any R-based data workflow without leaving the R environment.</p>
+        <div class="pkg-tags">
+          <span class="tag">Automation</span><span class="tag">Pipelines</span><span class="tag">Scheduling</span>
+        </div>
+        <div class="pkg-links">
+          <a href="https://github.com/laws2020" target="_blank" class="pkg-link">GitHub ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ WRITING & SPEAKING ═══════ -->
+<section id="writing">
+  <div class="container">
+    <div class="writing-grid">
+      <div>
+        <div class="reveal">
+          <p class="eyebrow">Writing & Speaking</p>
+          <h2 class="section-title">Ideas &<br><em>invitations</em></h2>
+          <p class="section-body" style="margin-top:1rem; margin-bottom:2.5rem">
+            I write and speak on African data infrastructure, R package development, and the open-source ecosystem for African institutions. Available for workshops, conference talks, and training engagements.
+          </p>
+        </div>
+
+        <div class="speaking-list reveal">
+
+          <div class="speaking-item">
+            <div class="speaking-date">2026<br>Apr</div>
+            <div>
+              <span class="speaking-type type-pkg">Package Launch</span>
+              <div class="speaking-title">opennaijR — Public Launch on GitHub & pkgdown</div>
+              <div class="speaking-sub">MIT-licensed R package for Nigerian macroeconomic data. Registry-driven architecture with Grammar of African Data Science verbs.</div>
+            </div>
+          </div>
+
+          <div class="speaking-item">
+            <div class="speaking-date">2026<br>Apr</div>
+            <div>
+              <span class="speaking-type type-article">Concept Note</span>
+              <div class="speaking-title">Digital Audit Systems & Tax Compliance in Nigeria's Digital Economy</div>
+              <div class="speaking-sub">NITDA research concept note — nrsR as methodological centrepiece for studying NTA 2025 compliance behaviour.</div>
+            </div>
+          </div>
+
+          <div class="speaking-item">
+            <div class="speaking-date">2025<br>Dec</div>
+            <div>
+              <span class="speaking-type type-training">Training</span>
+              <div class="speaking-title">3-Day R Data Infrastructure Workshop — Taraba State Bureau of Statistics</div>
+              <div class="speaking-sub">Bespoke curriculum covering live API querying, reproducible reporting, and Shiny dashboards for state statistical operations.</div>
+            </div>
+          </div>
+
+          <div class="speaking-item">
+            <div class="speaking-date">2025<br>Nov</div>
+            <div>
+              <span class="speaking-type type-pkg">Book</span>
+              <div class="speaking-title">Building Twitter Bots with R: From Authentication to Automated Posting</div>
+              <div class="speaking-sub">26-chapter technical book targeting African data practitioners and NGO staff. Features opennaijR as capstone data source.</div>
+            </div>
+          </div>
+
+          <div class="speaking-item">
+            <div class="speaking-date">Planned</div>
+            <div>
+              <span class="speaking-type type-article">Article</span>
+              <div class="speaking-title">Querying the CBN API in 3 lines of R — R-bloggers</div>
+              <div class="speaking-sub">Technical walkthrough of opennaijR for the global R community. Targeting R-bloggers publication for international reach.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="writing-sidebar reveal">
+        <div class="sidebar-card">
+          <h4>Topics I write & speak on</h4>
+          <div class="sidebar-topics">
+            <div class="sidebar-topic">African macroeconomic data infrastructure</div>
+            <div class="sidebar-topic">R package development at scale</div>
+            <div class="sidebar-topic">Open data for African institutions</div>
+            <div class="sidebar-topic">Nigeria Tax Act 2025 & PAYE compliance</div>
+            <div class="sidebar-topic">Grammar of African Data Science</div>
+            <div class="sidebar-topic">Data capacity building in West Africa</div>
+            <div class="sidebar-topic">Base R for publication-quality output</div>
+          </div>
+        </div>
+
+        <div class="speaking-cta-card">
+          <h4>Invite me to speak</h4>
+          <p>Available for conferences, institutional workshops, university lectures, and panel discussions on African data, open source, and R.</p>
+          <a href="#contact" class="btn btn-ghost" style="width:100%;justify-content:center;">Send an invitation →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CONTACT ═══════ -->
+<section id="contact">
+  <div class="hero-bg">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-bg-glow"></div>
+  </div>
+  <div class="container">
+    <div class="contact-inner">
+      <div class="reveal">
+        <p class="eyebrow" style="color:var(--gold)">Contact</p>
+        <h2 class="section-title" style="color:#fff">Let's build<br>something <em>real.</em></h2>
+        <p class="section-body" style="color:rgba(255,255,255,0.6); max-width:100%; margin-bottom:2.5rem">
+          One conversation is enough to understand whether there's a fit. No PDF required — just tell me what you're trying to do.
+        </p>
+
+        <div class="contact-info-list">
+          <div class="contact-info-item">
+            <div class="contact-info-icon">📍</div>
+            <div>
+              <div class="contact-info-label">Location</div>
+              <div class="contact-info-val">Abuja, Nigeria</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">🐙</div>
+            <div>
+              <div class="contact-info-label">GitHub</div>
+              <div class="contact-info-val"><a href="https://github.com/laws2020" target="_blank">github.com/laws2020</a></div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">📦</div>
+            <div>
+              <div class="contact-info-label">Package Docs</div>
+              <div class="contact-info-val"><a href="https://laws2020.github.io/opennaijR/" target="_blank">laws2020.github.io/opennaijR</a></div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">💼</div>
+            <div>
+              <div class="contact-info-label">Availability</div>
+              <div class="contact-info-val">Open to consulting, training & speaking engagements</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="contact-form">
+          <h3>Send an enquiry</h3>
+          <div id="form-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Your name</label>
+                <input type="text" id="f-name" placeholder="Dr. Amina Ibrahim">
+              </div>
+              <div class="form-group">
+                <label>Organisation</label>
+                <input type="text" id="f-org" placeholder="World Bank Nigeria">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email address</label>
+              <input type="email" id="f-email" placeholder="amina@organisation.org">
+            </div>
+            <div class="form-group">
+              <label>I'm interested in</label>
+              <select id="f-type">
+                <option value="" disabled selected>Select a service</option>
+                <option>Data infrastructure consulting</option>
+                <option>R training workshop</option>
+                <option>Commissioned package development</option>
+                <option>openafrR sponsorship / partnership</option>
+                <option>Speaking or training invitation</option>
+                <option>Developer tooling (tracesSQL, gitpulse etc.)</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Tell me about your project</label>
+              <textarea id="f-msg" placeholder="What are you trying to build? What data do you need? What's your institution and timeline?"></textarea>
+            </div>
+            <button class="btn btn-primary form-submit" onclick="handleSubmit()">Send enquiry →</button>
+          </div>
+          <div class="form-success" id="form-success">
+            ✦ Thank you — I'll be in touch within 48 hours.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-copy">
+        © 2026 Infosights Consulting · Lawrence Daniel Garba · All packages MIT licensed
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/laws2020" target="_blank">GitHub</a>
+        <a href="https://laws2020.github.io/opennaijR/" target="_blank">opennaijR</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════ JS ═══════ -->
+<script>
+/* Nav */
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobile-nav');
+hamburger.addEventListener('click', () => {
+  mobileNav.classList.toggle('open');
+});
+function closeMobileNav() { mobileNav.classList.remove('open'); }
+
+/* Active nav highlight on scroll */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 100) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current
+      ? '#fff' : 'rgba(255,255,255,0.7)';
+  });
+});
+
+/* Reveal on scroll */
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), 80);
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => revealObs.observe(el));
+
+/* Stagger pkg cards */
+document.querySelectorAll('.pkg-card').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.08) + 's';
+});
+
+/* Form */
+function handleSubmit() {
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const type  = document.getElementById('f-type').value;
+  if (!name || !email || !type) {
+    alert('Please fill in your name, email, and service type.');
+    return;
+  }
+  // In production: replace with fetch() to your form backend (Formspree, Netlify Forms, etc.)
+  // For now, show success message
+  document.getElementById('form-fields').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+}
+
+/* Smooth scroll offset for fixed nav */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      window.scrollTo({ top: target.offsetTop - 68, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
