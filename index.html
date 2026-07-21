@@ -9,7 +9,8 @@
 <meta property="og:description" content="Real packages. Real pipelines. Real results for African institutions.">
 <title>Infosights Consulting | African Data Infrastructure</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&family=Sora:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://js.paystack.co/v1/inline.js"></script>
 <style>
 /* ═══════════════════════════════════════
    DESIGN TOKENS
@@ -875,6 +876,232 @@ a { text-decoration: none; color: inherit; }
   .skills-grid { grid-template-columns: 1fr; }
   .footer-inner { flex-direction: column; text-align: center; }
 }
+
+/* ═══════════════════════════════════════
+   PAYMENT SECTION (scoped — ported from payment.html)
+═══════════════════════════════════════ */
+#payment {
+  padding: 120px 0;
+  background: #f5f0e8;
+  position: relative;
+}
+.payment-scope {
+  --p-ink:    #0d1117;
+  --p-paper:  #f5f0e8;
+  --p-accent: #c8522a;
+  --p-gold:   #d4a836;
+  --p-muted:  #6b6560;
+  --p-border: #d8d0c4;
+  font-family: 'Sora', sans-serif;
+  color: var(--p-ink);
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+}
+.payment-scope .eyebrow-p {
+  font-family: 'Space Mono', monospace;
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--p-accent);
+  margin-bottom: .75rem;
+  text-align: center;
+}
+.payment-scope h2.pay-h1 {
+  font-family: 'Sora', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: 1.15;
+  margin-bottom: .6rem;
+  text-align: center;
+  color: var(--p-ink);
+}
+.payment-scope .pay-subtitle {
+  font-size: .9rem;
+  color: var(--p-muted);
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+.payment-scope .pay-card {
+  background: #fff;
+  border: 1px solid var(--p-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 24px rgba(13,17,23,.06);
+}
+.payment-scope .pay-card-header {
+  background: var(--p-ink);
+  color: var(--p-paper);
+  padding: 1.25rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.payment-scope .pay-card-header .pay-label { font-size: .75rem; opacity: .55; letter-spacing: .06em; text-transform: uppercase; margin-bottom: .2rem; }
+.payment-scope .pay-card-header .pay-amount { font-family: 'Space Mono', monospace; font-size: 1.6rem; font-weight: 700; }
+.payment-scope .pay-card-header .pay-currency { font-size: .85rem; opacity: .6; }
+.payment-scope .pay-card-header .pay-program-tag {
+  background: var(--p-accent);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 600;
+  padding: .3rem .8rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.payment-scope .pay-form-body { padding: 1.75rem; }
+.payment-scope .pay-field { margin-bottom: 1.2rem; }
+.payment-scope .pay-field label {
+  display: block;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  margin-bottom: .4rem;
+  color: var(--p-ink);
+}
+.payment-scope .pay-field label span { color: var(--p-accent); }
+.payment-scope .pay-field input,
+.payment-scope .pay-field select {
+  width: 100%;
+  padding: .7rem 1rem;
+  border: 1.5px solid var(--p-border);
+  border-radius: 8px;
+  font-family: 'Sora', sans-serif;
+  font-size: .875rem;
+  color: var(--p-ink);
+  background: var(--p-paper);
+  transition: border-color .2s, box-shadow .2s;
+  outline: none;
+  appearance: none;
+}
+.payment-scope .pay-field input:focus,
+.payment-scope .pay-field select:focus {
+  border-color: var(--p-ink);
+  box-shadow: 0 0 0 3px rgba(13,17,23,.08);
+}
+.payment-scope .pay-field input::placeholder { color: #b0a898; }
+.payment-scope .pay-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.payment-scope .pay-select-wrap { position: relative; }
+.payment-scope .pay-select-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 1rem; top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--p-muted);
+  font-size: .75rem;
+}
+.payment-scope .pay-divider { height: 1px; background: var(--p-border); margin: 1.5rem 0; }
+.payment-scope .pay-summary {
+  background: var(--p-paper);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.5rem;
+  font-size: .82rem;
+}
+.payment-scope .pay-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .3rem 0;
+  color: var(--p-muted);
+}
+.payment-scope .pay-summary-row:last-child {
+  border-top: 1px solid var(--p-border);
+  margin-top: .4rem;
+  padding-top: .7rem;
+  font-weight: 700;
+  color: var(--p-ink);
+  font-size: .9rem;
+}
+.payment-scope .pay-summary-row .pay-mono { font-family: 'Space Mono', monospace; }
+.payment-scope .pay-btn {
+  width: 100%;
+  padding: .95rem;
+  background: var(--p-ink);
+  color: var(--p-paper);
+  border: none;
+  border-radius: 8px;
+  font-family: 'Sora', sans-serif;
+  font-size: .95rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  transition: background .2s, transform .1s;
+  position: relative;
+  overflow: hidden;
+}
+.payment-scope .pay-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,.08));
+}
+.payment-scope .pay-btn:hover { background: #1e2832; }
+.payment-scope .pay-btn:active { transform: scale(.99); }
+.payment-scope .pay-btn svg { width: 18px; height: 18px; fill: currentColor; }
+.payment-scope .pay-footer-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  margin-top: 1rem;
+  font-size: .72rem;
+  color: var(--p-muted);
+}
+.payment-scope .pay-footer-note svg { width: 13px; height: 13px; fill: var(--p-muted); }
+.payment-scope .pay-success-screen {
+  display: none;
+  text-align: center;
+  padding: 2.5rem 1.75rem;
+}
+.payment-scope .pay-success-screen.show { display: block; }
+.payment-scope .pay-form-body.hide { display: none; }
+.payment-scope .pay-checkmark {
+  width: 64px; height: 64px;
+  background: #eaf7ef;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+.payment-scope .pay-checkmark svg { width: 32px; height: 32px; stroke: #27ae60; fill: none; stroke-width: 2.5; }
+.payment-scope .pay-success-screen h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: .5rem; letter-spacing: -.03em; }
+.payment-scope .pay-success-screen p { font-size: .875rem; color: var(--p-muted); line-height: 1.6; }
+.payment-scope .pay-ref-box {
+  background: var(--p-paper);
+  border: 1px dashed var(--p-border);
+  border-radius: 8px;
+  padding: .75rem 1rem;
+  margin: 1.25rem 0;
+  font-family: 'Space Mono', monospace;
+  font-size: .8rem;
+  color: var(--p-muted);
+}
+.payment-scope .pay-ref-box strong { color: var(--p-ink); display: block; font-size: .95rem; margin-top: .2rem; }
+.payment-scope .pay-secure-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  font-family: 'Space Mono', monospace;
+  font-size: .7rem;
+  color: var(--p-muted);
+  margin-bottom: 1.5rem;
+}
+.payment-scope .pay-secure-badge svg { width: 12px; height: 12px; fill: #27ae60; }
+@media (max-width: 480px) {
+  .payment-scope .pay-h1 { font-size: 1.6rem; }
+  .payment-scope .pay-row-2 { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -894,6 +1121,7 @@ a { text-decoration: none; color: inherit; }
       <li><a href="#packages">Packages</a></li>
       <li><a href="#writing">Writing</a></li>
       <li><a href="#contact">Contact</a></li>
+      <li><a href="#payment">Pay Now</a></li>
     </ul>
     <div class="nav-cta">
       <a href="#contact" class="btn btn-primary">Work with me</a>
@@ -911,6 +1139,7 @@ a { text-decoration: none; color: inherit; }
   <a href="#packages" onclick="closeMobileNav()">Packages</a>
   <a href="#writing" onclick="closeMobileNav()">Writing & Speaking</a>
   <a href="#contact" onclick="closeMobileNav()">Contact</a>
+  <a href="#payment" onclick="closeMobileNav()">Pay Now</a>
 </div>
 
 <!-- ═══════ HERO ═══════ -->
@@ -1120,7 +1349,11 @@ a { text-decoration: none; color: inherit; }
           <span class="tag">On-site</span>
         </div>
       </div>
-
+      <div style="margin-top:1.25rem">
+        <a href="#payment" class="btn btn-primary" style="font-size:0.8rem; padding:0.65rem 1.5rem;">
+         Pay course fee →
+        </a>
+      </div>
       <div class="service-card">
         <div class="service-num">03</div>
         <div class="service-icon">⚖️</div>
@@ -1389,6 +1622,101 @@ a { text-decoration: none; color: inherit; }
   </div>
 </section>
 
+<!-- ═══════ PAYMENT (incorporated from payment.html) ═══════ -->
+<section id="payment">
+  <div class="container container--narrow">
+    <div class="payment-scope reveal">
+      <div class="pay-secure-badge">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Secured by Paystack
+      </div>
+      <p class="eyebrow-p">Student Portal</p>
+      <h2 class="pay-h1">Course Fee Payment</h2>
+      <p class="pay-subtitle">Complete your enrollment by paying your programme fee below. You will receive a confirmation receipt via email.</p>
+
+      <div class="pay-card">
+        <div class="pay-card-header">
+          <div>
+            <div class="pay-label">Programme Fee</div>
+            <div class="pay-amount" id="display-amount">₦50,000</div>
+            <div class="pay-currency">Nigerian Naira</div>
+          </div>
+          <div class="pay-program-tag" id="display-program">Training</div>
+        </div>
+
+        <!-- FORM -->
+        <div class="pay-form-body" id="form-body">
+          <div class="pay-field">
+            <label>Programme <span>*</span></label>
+            <div class="pay-select-wrap">
+              <select id="programme" onchange="updateFee()">
+                <option value="" disabled selected>Select a programme…</option>
+                <option value="R_DATA" data-fee="50000" data-label="R for Data">R for Data Analysis — ₦50,000</option>
+                <option value="MACRO" data-fee="75000" data-label="Macro Analytics">African Macro Analytics — ₦75,000</option>
+                <option value="STATS" data-fee="40000" data-label="Applied Stats">Applied Statistics — ₦40,000</option>
+                <option value="PKG_DEV" data-fee="90000" data-label="R Package Dev">R Package Development — ₦90,000</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pay-row-2">
+            <div class="pay-field">
+              <label>First Name <span>*</span></label>
+              <input type="text" id="first-name" placeholder="Amina" />
+            </div>
+            <div class="pay-field">
+              <label>Last Name <span>*</span></label>
+              <input type="text" id="last-name" placeholder="Ibrahim" />
+            </div>
+          </div>
+
+          <div class="pay-field">
+            <label>Email Address <span>*</span></label>
+            <input type="email" id="pay-email" placeholder="amina@example.com" />
+          </div>
+
+          <div class="pay-field">
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="+234 800 000 0000" />
+          </div>
+
+          <div class="pay-divider"></div>
+
+          <div class="pay-summary">
+            <div class="pay-summary-row"><span>Programme</span><span id="sum-program" class="pay-mono">—</span></div>
+            <div class="pay-summary-row"><span>Student</span><span id="sum-name" class="pay-mono">—</span></div>
+            <div class="pay-summary-row"><span>Total Due</span><span id="sum-amount" class="pay-mono">—</span></div>
+          </div>
+
+          <button class="pay-btn" onclick="payNow()">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Pay Securely with Paystack
+          </button>
+
+          <p class="pay-footer-note">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            256-bit SSL encryption · PCI DSS compliant · No card data stored
+          </p>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="pay-success-screen" id="success-screen">
+          <div class="pay-checkmark">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3>Payment Successful!</h3>
+          <p>Thank you — your enrollment for <strong id="success-program"></strong> has been confirmed.</p>
+          <div class="pay-ref-box">
+            Reference
+            <strong id="success-ref">—</strong>
+          </div>
+          <p>A receipt has been sent to <strong id="success-email"></strong>. Keep it safe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════ CONTACT ═══════ -->
 <section id="contact">
   <div class="hero-bg">
@@ -1439,7 +1767,7 @@ a { text-decoration: none; color: inherit; }
       <div class="reveal">
         <div class="contact-form">
           <h3>Send an enquiry</h3>
-          <div id="form-fields">
+          <div id="contact-form-fields">
             <div class="form-row">
               <div class="form-group">
                 <label>Your name</label>
@@ -1539,7 +1867,7 @@ document.querySelectorAll('.pkg-card').forEach((el, i) => {
   el.style.transitionDelay = (i * 0.08) + 's';
 });
 
-/* Form */
+/* Contact form */
 function handleSubmit() {
   const name  = document.getElementById('f-name').value.trim();
   const email = document.getElementById('f-email').value.trim();
@@ -1550,7 +1878,7 @@ function handleSubmit() {
   }
   // In production: replace with fetch() to your form backend (Formspree, Netlify Forms, etc.)
   // For now, show success message
-  document.getElementById('form-fields').style.display = 'none';
+  document.getElementById('contact-form-fields').style.display = 'none';
   document.getElementById('form-success').style.display = 'block';
 }
 
@@ -1564,6 +1892,85 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     }
   });
 });
+
+/* ═══════════════════════════════════════
+   PAYMENT (ported from payment.html)
+═══════════════════════════════════════ */
+// ⚠️  REPLACE with your real Paystack PUBLIC key — Dashboard → Settings → API Keys
+const PAYSTACK_PUBLIC_KEY = 'pk_test_2a9085cbb4e5e665088ce96f8da767d3c8b85967';
+
+let currentFee = 0;
+
+function updateFee() {
+  const sel = document.getElementById('programme');
+  const opt = sel.options[sel.selectedIndex];
+  currentFee = parseInt(opt.dataset.fee || 0, 10);
+  const label = opt.dataset.label || '—';
+
+  document.getElementById('display-amount').textContent = currentFee
+    ? '₦' + currentFee.toLocaleString() : '₦—';
+  document.getElementById('display-program').textContent = label;
+  document.getElementById('sum-program').textContent = label;
+  refreshPaySummary();
+}
+
+function refreshPaySummary() {
+  const fn = document.getElementById('first-name').value.trim();
+  const ln = document.getElementById('last-name').value.trim();
+  const name = (fn || ln) ? `${fn} ${ln}`.trim() : '—';
+  document.getElementById('sum-name').textContent = name;
+  document.getElementById('sum-amount').textContent = currentFee
+    ? '₦' + currentFee.toLocaleString() : '—';
+}
+
+// Live summary update
+['first-name','last-name'].forEach(id =>
+  document.getElementById(id).addEventListener('input', refreshPaySummary)
+);
+
+function payNow() {
+  const email    = document.getElementById('pay-email').value.trim();
+  const firstName= document.getElementById('first-name').value.trim();
+  const lastName = document.getElementById('last-name').value.trim();
+  const phone    = document.getElementById('phone').value.trim();
+  const programme= document.getElementById('programme').value;
+
+  if (!programme)    return alert('Please select a programme.');
+  if (!firstName || !lastName) return alert('Please enter your full name.');
+  if (!email)        return alert('Please enter your email address.');
+  if (!currentFee)   return alert('Programme fee not found. Please re-select.');
+
+  const sel   = document.getElementById('programme');
+  const label = sel.options[sel.selectedIndex].dataset.label;
+
+  const handler = PaystackPop.setup({
+    key:       PAYSTACK_PUBLIC_KEY,
+    email:     email,
+    amount:    currentFee * 100,           // Paystack uses kobo (×100)
+    currency:  'NGN',
+    ref:       'INF-' + Date.now(),
+    metadata: {
+      custom_fields: [
+        { display_name: 'Student Name',  variable_name: 'student_name',  value: firstName + ' ' + lastName },
+        { display_name: 'Programme',     variable_name: 'programme',     value: label },
+        { display_name: 'Phone',         variable_name: 'phone',         value: phone },
+      ]
+    },
+    callback: function(response) {
+      // Payment successful
+      document.getElementById('form-body').classList.add('hide');
+      const s = document.getElementById('success-screen');
+      s.classList.add('show');
+      document.getElementById('success-program').textContent = label;
+      document.getElementById('success-ref').textContent = response.reference;
+      document.getElementById('success-email').textContent = email;
+    },
+    onClose: function() {
+      // User closed modal without paying — do nothing
+    }
+  });
+  handler.openIframe();
+}
 </script>
 
 </body>
